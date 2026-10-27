@@ -50,6 +50,14 @@ jobs:
           docker build -t ${{ vars.ACR_LOGIN_SERVER }}/${{ vars.NAMESPACE }}/shipwave-api:${{ github.sha }} api/
           docker push ${{ vars.ACR_LOGIN_SERVER }}/${{ vars.NAMESPACE }}/shipwave-api:${{ github.sha }}
 
+      - name: Scan pushed image with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ vars.ACR_LOGIN_SERVER }}/${{ vars.NAMESPACE }}/shipwave-api:${{ github.sha }}
+          format: table
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
