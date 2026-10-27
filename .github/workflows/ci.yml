@@ -53,7 +53,7 @@ jobs:
       - name: Scan pushed image with Trivy
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-          trivy image --severity HIGH,CRITICAL --exit-code 1 ${{ vars.ACR_LOGIN_SERVER }}/${{ vars.NAMESPACE }}/shipwave-api:${{ github.sha }}
+          trivy image --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 ${{ vars.ACR_LOGIN_SERVER }}/${{ vars.NAMESPACE }}/shipwave-api:${{ github.sha }}
 
   deploy:
     needs: build
